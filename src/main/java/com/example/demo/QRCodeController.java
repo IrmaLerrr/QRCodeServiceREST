@@ -19,7 +19,12 @@ private static final QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
     }
 
     @GetMapping("/api/qrcode")
-    public ResponseEntity<BufferedImage> getImage(@RequestParam int size, @RequestParam String type) {
+    public ResponseEntity<BufferedImage> getImage(@RequestParam int size, @RequestParam String type, @RequestParam String contents) {
+
+        if (contents == null || contents.isBlank()) {
+            throw new IllegalArgumentException("Contents cannot be null or blank");
+        }
+
         if (size < 150 || size > 350) {
             throw new IllegalArgumentException("Image size must be between 150 and 350 pixels");
         }
@@ -31,7 +36,7 @@ private static final QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
             default -> throw new IllegalArgumentException("Only png, jpeg and gif image types are supported");
         };
 
-        BufferedImage bufferedImage = qrCodeGenerator.getQR(size);
+        BufferedImage bufferedImage = qrCodeGenerator.getQR(size, contents);
         return ResponseEntity
                 .ok()
                 .contentType(mediaType)

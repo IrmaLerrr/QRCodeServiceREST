@@ -25,6 +25,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'com.google.zxing:core:3.5.2'
+	implementation 'com.google.zxing:javase:3.5.2'
 }
 
 tasks.named('test') {

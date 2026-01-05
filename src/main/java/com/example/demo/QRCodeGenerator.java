@@ -1,16 +1,24 @@
 package com.example.demo;
 
-import java.awt.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 import java.awt.image.BufferedImage;
 
 public class QRCodeGenerator {
 
-    public BufferedImage getQR(int size) {
-        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image.createGraphics();
-
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, size, size);
-        return image;
+    public BufferedImage getQR(int size, String data) {
+        QRCodeWriter writer = new QRCodeWriter();
+        BufferedImage bufferedImage = null;
+        try {
+            BitMatrix bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, size, size);
+            bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return bufferedImage;
     }
 }
