@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-
 @RestController
 public class QRCodeController {
-private static final QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
+    private static final QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
 
     @GetMapping("api/health")
     public ResponseEntity<Void> healthCheck() {
@@ -24,9 +23,9 @@ private static final QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
             @RequestParam(defaultValue = "250") int size,
             @RequestParam(defaultValue = "png") String type,
             @RequestParam(defaultValue = "L") String correction,
-            @RequestParam String contents) {
+            @RequestParam(required = false) String contents) {
 
-        if (contents.isBlank()) {
+        if (contents == null || contents.isBlank()) {
             throw new IllegalArgumentException("Contents cannot be null or blank");
         }
 
