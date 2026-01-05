@@ -4,15 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class QRCodeGenerator {
-    private final int width = 250;
-    private final int height = 250;
 
-    public BufferedImage getQR() {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    public BufferedImage getQR(int size) {
+        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
 
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0, size, size);
         return image;
     }
 }

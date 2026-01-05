@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.image.BufferedImage;
@@ -16,13 +17,26 @@ private static final QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
     public ResponseEntity<Void> healthCheck() {
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/api/qrcode")
-    public ResponseEntity<BufferedImage> getImage() {
-        BufferedImage bufferedImage = qrCodeGenerator.getQR(); // your BufferedImage source
+    public ResponseEntity<BufferedImage> getImage(@RequestParam int size, @RequestParam String type) {
+        if (size < 150 || size > 350) {
+            throw new IllegalArgumentException("Image size must be between 150 and 350 pixels");
+        }
+
+        MediaType mediaType = switch (type.toLowerCase()) {
+            case "png" -> MediaType.IMAGE_PNG;
+            case "jpeg" -> MediaType.IMAGE_JPEG;
+            case "gif" -> MediaType.IMAGE_GIF;
+            default -> throw new IllegalArgumentException("Only png, jpeg and gif image types are supported");
+        };
+
+        BufferedImage bufferedImage = qrCodeGenerator.getQR(size);
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.IMAGE_PNG)
+                .contentType(mediaType)
                 .body(bufferedImage);
     }
+
 }
 
